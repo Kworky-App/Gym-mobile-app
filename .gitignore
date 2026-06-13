@@ -31,6 +31,9 @@ yarn-error.*
 # local env files
 .env*.local
 
+# Cursor (rules and config stay local)
+.cursor/
+
 # typescript
 *.tsbuildinfo
 
