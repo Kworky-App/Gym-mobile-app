@@ -1,73 +1,82 @@
-# Minimal Template
+# Gym-mobile-app
 
-This is a [React Native](https://reactnative.dev/) project built with [Expo](https://expo.dev/) and [React Native Reusables](https://reactnativereusables.com).
+Application mobile **Gym-Kworky** développée avec [Expo](https://expo.dev/) et [React Native Reusables](https://reactnativereusables.com).
 
-It was initialized using the following command, then the `Minimal (Nativewind)` template was selected when prompted:
+Dépôt hébergé sur l'organisation [Kworky-App](https://github.com/Kworky-App) :
+
+| Projet | Description |
+|--------|-------------|
+| [Gym-mobile-app](https://github.com/Kworky-App/Gym-mobile-app) | Application mobile (ce dépôt) |
+| [Gym-backend](https://github.com/Kworky-App/Gym-backend) | API backend (ASP.NET Core) |
+| [Gym-client-admin](https://github.com/Kworky-App/Gym-client-admin) | Interface d'administration |
+
+## Fonctionnalités
+
+- Suivi des entraînements
+- Programmes personnalisés
+- Statistiques de progression
+- Timer de repos
+- Historique des séances
+
+## Structure de l'app
+
+Navigation par onglets (Expo Router) :
+
+- **Accueil** — présentation et accès rapide aux fonctionnalités
+- **Séances** — gestion des entraînements
+- **Profil** — statistiques et paramètres utilisateur
+
+## Prérequis
+
+- [Node.js](https://nodejs.org/) (LTS recommandé)
+- [pnpm](https://pnpm.io/)
+- [Expo Go](https://expo.dev/go) sur appareil physique, ou un émulateur iOS / Android
+
+## Démarrage
 
 ```bash
-npx @react-native-reusables/cli@latest init
+pnpm install
+pnpm dev
 ```
 
-## Getting Started
+Lance le serveur de développement Expo. Ensuite :
 
-To run the development server:
+- **iOS** : `i` pour ouvrir le simulateur _(Mac uniquement)_
+- **Android** : `a` pour ouvrir l'émulateur
+- **Web** : `w` pour ouvrir dans le navigateur
 
-```bash
-    npm run dev
-    # or
-    yarn dev
-    # or
-    pnpm dev
-    # or
-    bun dev
-```
+Vous pouvez aussi scanner le QR code avec [Expo Go](https://expo.dev/go) sur votre téléphone.
 
-This will start the Expo Dev Server. Open the app in:
-
-- **iOS**: press `i` to launch in the iOS simulator _(Mac only)_
-- **Android**: press `a` to launch in the Android emulator
-- **Web**: press `w` to run in a browser
-
-You can also scan the QR code using the [Expo Go](https://expo.dev/go) app on your device. This project fully supports running in Expo Go for quick testing on physical devices.
-
-## Adding components
-
-You can add more reusable components using the CLI:
+## Ajouter des composants UI
 
 ```bash
 npx react-native-reusables/cli@latest add [...components]
 ```
 
-> e.g. `npx react-native-reusables/cli@latest add input textarea`
+Exemple :
 
-If you don't specify any component names, you'll be prompted to select which components to add interactively. Use the `--all` flag to install all available components at once.
+```bash
+npx react-native-reusables/cli@latest add input textarea
+```
 
-## Project Features
+## Stack technique
 
-- ⚛️ Built with [Expo Router](https://expo.dev/router)
-- 🎨 Styled with [Tailwind CSS](https://tailwindcss.com/) via [Nativewind](https://www.nativewind.dev/)
-- 📦 UI powered by [React Native Reusables](https://github.com/founded-labs/react-native-reusables)
-- 🚀 New Architecture enabled
-- 🔥 Edge to Edge enabled
-- 📱 Runs on iOS, Android, and Web
+- [Expo Router](https://expo.dev/router) — navigation file-based
+- [Nativewind](https://www.nativewind.dev/) — Tailwind CSS pour React Native
+- [React Native Reusables](https://github.com/founded-labs/react-native-reusables) — composants UI
+- [Lucide React Native](https://lucide.dev/) — icônes
 
-## Learn More
+## Déploiement
 
-To dive deeper into the technologies used:
-
-- [React Native Docs](https://reactnative.dev/docs/getting-started)
-- [Expo Docs](https://docs.expo.dev/)
-- [Nativewind Docs](https://www.nativewind.dev/)
-- [React Native Reusables](https://reactnativereusables.com)
-
-## Deploy with EAS
-
-The easiest way to deploy your app is with [Expo Application Services (EAS)](https://expo.dev/eas).
+Le déploiement se fait via [Expo Application Services (EAS)](https://expo.dev/eas) :
 
 - [EAS Build](https://docs.expo.dev/build/introduction/)
 - [EAS Updates](https://docs.expo.dev/eas-update/introduction/)
 - [EAS Submit](https://docs.expo.dev/submit/introduction/)
 
----
+## Ressources
 
-If you enjoy using React Native Reusables, please consider giving it a ⭐ on [GitHub](https://github.com/founded-labs/react-native-reusables). Your support means a lot!
+- [React Native Docs](https://reactnative.dev/docs/getting-started)
+- [Expo Docs](https://docs.expo.dev/)
+- [Nativewind Docs](https://www.nativewind.dev/)
+- [React Native Reusables](https://reactnativereusables.com)
