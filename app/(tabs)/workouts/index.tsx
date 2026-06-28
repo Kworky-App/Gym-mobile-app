@@ -1,5 +1,5 @@
-import { Text } from '@/components/ui/text';
 import { ScrollView } from 'react-native';
+import { Text } from '@/components/ui/text';
 
 export default function WorkoutsScreen() {
   return (
@@ -8,7 +8,8 @@ export default function WorkoutsScreen() {
         alignItems: 'center',
         justifyContent: 'center',
         padding: 24,
-      }}>
+      }}
+    >
       <Text variant="h1" className="text-center">
         Séances
       </Text>
