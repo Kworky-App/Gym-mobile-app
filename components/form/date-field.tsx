@@ -3,11 +3,10 @@ import DateTimePicker, {
 } from '@react-native-community/datetimepicker';
 import type { AnyFieldApi } from '@tanstack/react-form';
 import { useState } from 'react';
-import { Platform, Pressable, View } from 'react-native';
+import { Modal, Platform, Pressable, View } from 'react-native';
 import { FormFieldError } from '@/components/form/field-error';
 import { FormTextField } from '@/components/form/text-field';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Text } from '@/components/ui/text';
 import {
@@ -15,6 +14,7 @@ import {
   formatDateISO,
   parseLocalDateString,
 } from '@/lib/date';
+import { cn } from '@/lib/utils';
 
 const DEFAULT_BIRTH_DATE = new Date(2000, 0, 1);
 
@@ -30,6 +30,38 @@ type FormDateFieldProps = {
   minimumDate?: Date;
 };
 
+type DateTriggerProps = {
+  labelId: string;
+  value: string;
+  placeholder: string;
+  onPress: () => void;
+};
+
+function DateTrigger({
+  labelId,
+  value,
+  placeholder,
+  onPress,
+}: DateTriggerProps) {
+  return (
+    <Pressable
+      onPress={onPress}
+      accessibilityRole="button"
+      aria-labelledby={labelId}
+      className="dark:bg-input/30 border-input bg-background h-10 w-full justify-center rounded-md border px-3 shadow-sm shadow-black/5"
+    >
+      <Text
+        className={cn(
+          'text-base',
+          value ? 'text-foreground' : 'text-muted-foreground/50',
+        )}
+      >
+        {value || placeholder}
+      </Text>
+    </Pressable>
+  );
+}
+
 function NativeFormDateField({
   field,
   label,
@@ -38,68 +70,88 @@ function NativeFormDateField({
   minimumDate = new Date(1900, 0, 1),
 }: FormDateFieldProps) {
   const [showPicker, setShowPicker] = useState(false);
-  const selectedDate = parseDate(field.state.value);
+  const [pickerDate, setPickerDate] = useState(() =>
+    parseDate(field.state.value),
+  );
+  const labelId = `${field.name}-label`;
   const displayValue = formatDateDisplay(field.state.value);
 
-  const handleChange = (_event: DateTimePickerEvent, date?: Date) => {
-    if (Platform.OS === 'android') {
-      setShowPicker(false);
-    }
+  const openPicker = () => {
+    setPickerDate(parseDate(field.state.value));
+    setShowPicker(true);
+  };
 
-    if (!date) return;
+  const closePicker = () => {
+    setShowPicker(false);
+    field.handleBlur();
+  };
+
+  const handleAndroidChange = (event: DateTimePickerEvent, date?: Date) => {
+    setShowPicker(false);
+
+    if (event.type === 'dismissed' || !date) {
+      field.handleBlur();
+      return;
+    }
 
     field.handleChange(formatDateISO(date));
     field.handleBlur();
   };
 
+  const handleIosChange = (_event: DateTimePickerEvent, date?: Date) => {
+    if (date) setPickerDate(date);
+  };
+
+  const confirmIosDate = () => {
+    field.handleChange(formatDateISO(pickerDate));
+    closePicker();
+  };
+
   return (
     <View className="gap-1.5">
-      <Label nativeID={field.name}>{label}</Label>
+      <Label nativeID={labelId}>{label}</Label>
 
-      <Pressable
-        onPress={() => {
-          setShowPicker(true);
-          field.handleBlur();
-        }}
-        accessibilityRole="button"
-        accessibilityLabel={label}
-      >
-        <View pointerEvents="none">
-          <Input
-            nativeID={field.name}
-            editable={false}
-            placeholder={placeholder}
-            value={displayValue}
-          />
-        </View>
-      </Pressable>
+      <DateTrigger
+        labelId={labelId}
+        value={displayValue}
+        placeholder={placeholder}
+        onPress={openPicker}
+      />
 
-      {showPicker ? (
-        Platform.OS === 'ios' ? (
-          <View className="gap-2">
-            <DateTimePicker
-              value={selectedDate}
-              mode="date"
-              display="spinner"
-              maximumDate={maximumDate}
-              minimumDate={minimumDate}
-              locale="fr-FR"
-              onChange={handleChange}
-            />
-            <Button variant="outline" onPress={() => setShowPicker(false)}>
-              <Text>Valider</Text>
-            </Button>
+      {showPicker && Platform.OS === 'ios' ? (
+        <Modal
+          visible
+          transparent
+          animationType="slide"
+          onRequestClose={closePicker}
+        >
+          <View className="flex-1 justify-end bg-black/40">
+            <Pressable className="flex-1" onPress={closePicker} />
+            <View className="bg-background gap-4 rounded-t-2xl p-4 pb-8">
+              <DateTimePicker
+                value={pickerDate}
+                mode="date"
+                display="spinner"
+                maximumDate={maximumDate}
+                minimumDate={minimumDate}
+                locale="fr-FR"
+                onChange={handleIosChange}
+              />
+              <Button onPress={confirmIosDate}>
+                <Text>Valider</Text>
+              </Button>
+            </View>
           </View>
-        ) : (
-          <DateTimePicker
-            value={selectedDate}
-            mode="date"
-            display="default"
-            maximumDate={maximumDate}
-            minimumDate={minimumDate}
-            onChange={handleChange}
-          />
-        )
+        </Modal>
+      ) : showPicker ? (
+        <DateTimePicker
+          value={pickerDate}
+          mode="date"
+          display="default"
+          maximumDate={maximumDate}
+          minimumDate={minimumDate}
+          onChange={handleAndroidChange}
+        />
       ) : null}
 
       <FormFieldError field={field} />

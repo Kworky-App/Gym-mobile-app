@@ -2,6 +2,7 @@ import { useForm } from '@tanstack/react-form';
 import { router } from 'expo-router';
 import { useEffect, useState } from 'react';
 import { ScrollView, type TextInputProps, View } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { FormDateField } from '@/components/form/date-field';
 import { FormFieldError } from '@/components/form/field-error';
 import { FormTextField } from '@/components/form/text-field';
@@ -86,6 +87,7 @@ const registerFields: RegisterFieldConfig[] = [
 ];
 
 export default function AuthRegister() {
+  const insets = useSafeAreaInsets();
   const [goHome, setGoHome] = useState(false);
   const { mutate, isPending, error } = useRegisterUser();
 
@@ -109,15 +111,19 @@ export default function AuthRegister() {
   if (goHome) return null;
 
   return (
-    <ScrollView
-      className="flex-1"
-      contentContainerClassName="gap-4 pb-8 pt-2"
-      keyboardShouldPersistTaps="handled"
-    >
-      <Text variant="h3">Créer un compte</Text>
-      <Text variant="muted">Inscrivez-vous pour suivre vos entraînements.</Text>
+    <View className="flex-1">
+      <ScrollView
+        className="flex-1"
+        contentContainerClassName="gap-4 pt-2"
+        keyboardShouldPersistTaps="handled"
+        showsVerticalScrollIndicator={false}
+      >
+        <Text variant="h3">Créer un compte</Text>
+        <Text variant="muted">
+          Inscrivez-vous pour suivre vos entraînements.
+        </Text>
 
-      {registerFields.map((config) => {
+        {registerFields.map((config) => {
         if (config.type === 'gender') {
           return (
             <form.Field key="gender" name="gender">
@@ -177,24 +183,30 @@ export default function AuthRegister() {
         );
       })}
 
-      {error ? (
-        <Text className="text-destructive text-sm">{error.message}</Text>
-      ) : null}
+        {error ? (
+          <Text className="text-destructive text-sm">{error.message}</Text>
+        ) : null}
+      </ScrollView>
 
-      <form.Subscribe selector={(state) => state.isSubmitting}>
-        {(isSubmitting) => (
-          <Button
-            onPress={form.handleSubmit}
-            disabled={isPending || isSubmitting}
-          >
-            <Text>
-              {isPending || isSubmitting
-                ? 'Création du compte...'
-                : "S'inscrire"}
-            </Text>
-          </Button>
-        )}
-      </form.Subscribe>
-    </ScrollView>
+      <View
+        className="border-t border-border bg-background px-0 pt-4"
+        style={{ paddingBottom: Math.max(insets.bottom, 16) }}
+      >
+        <form.Subscribe selector={(state) => state.isSubmitting}>
+          {(isSubmitting) => (
+            <Button
+              onPress={form.handleSubmit}
+              disabled={isPending || isSubmitting}
+            >
+              <Text>
+                {isPending || isSubmitting
+                  ? 'Création du compte...'
+                  : "S'inscrire"}
+              </Text>
+            </Button>
+          )}
+        </form.Subscribe>
+      </View>
+    </View>
   );
 }
