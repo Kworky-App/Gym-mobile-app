@@ -1,3 +1,3 @@
-import AuthRegister from '@/features/auth/AuthRegister';
+import AuthLogin from '@/features/auth/AuthLogin';
 
-export default AuthRegister;
+export default AuthLogin;

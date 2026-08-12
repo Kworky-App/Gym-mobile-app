@@ -124,69 +124,82 @@ export default function AuthRegister() {
         </Text>
 
         {registerFields.map((config) => {
-        if (config.type === 'gender') {
-          return (
-            <form.Field key="gender" name="gender">
-              {(field) => (
-                <View className="gap-2">
-                  <Label>Genre</Label>
-                  <RadioGroup
-                    value={String(field.state.value)}
-                    onValueChange={(value) =>
-                      field.handleChange(Number(value) as GenderValue)
-                    }
-                  >
-                    {([0, 1] as const).map((value) => (
-                      <View key={value} className="flex-row items-center gap-3">
-                        <RadioGroupItem
-                          size="lg"
-                          value={String(value)}
-                          aria-labelledby={`gender-${value}`}
-                        />
-                        <Label
-                          nativeID={`gender-${value}`}
-                          onPress={() => field.handleChange(value)}
-                          className="text-base"
-                        >
-                          {genderByValue[value] === 'Male' ? 'Homme' : 'Femme'}
-                        </Label>
-                      </View>
-                    ))}
-                  </RadioGroup>
-                  <FormFieldError field={field} />
-                </View>
-              )}
-            </form.Field>
-          );
-        }
+          if (config.type === 'gender') {
+            return (
+              <form.Field key="gender" name="gender">
+                {(field) => (
+                  <View className="gap-2">
+                    <Label>Genre</Label>
+                    <RadioGroup
+                      value={String(field.state.value)}
+                      onValueChange={(value) =>
+                        field.handleChange(Number(value) as GenderValue)
+                      }
+                    >
+                      {([0, 1] as const).map((value) => (
+                        <View key={value} className="flex-row items-center gap-3">
+                          <RadioGroupItem
+                            size="lg"
+                            value={String(value)}
+                            aria-labelledby={`gender-${value}`}
+                          />
+                          <Label
+                            nativeID={`gender-${value}`}
+                            onPress={() => field.handleChange(value)}
+                            className="text-base"
+                          >
+                            {genderByValue[value] === 'Male' ? 'Homme' : 'Femme'}
+                          </Label>
+                        </View>
+                      ))}
+                    </RadioGroup>
+                    <FormFieldError field={field} />
+                  </View>
+                )}
+              </form.Field>
+            );
+          }
 
-        if (config.type === 'date') {
+          if (config.type === 'date') {
+            return (
+              <form.Field key={config.name} name={config.name}>
+                {(field) => (
+                  <FormDateField
+                    field={field}
+                    label={config.label}
+                    placeholder={config.placeholder}
+                  />
+                )}
+              </form.Field>
+            );
+          }
+
+          const { type: _, ...textFieldProps } = config;
+
           return (
             <form.Field key={config.name} name={config.name}>
-              {(field) => (
-                <FormDateField
-                  field={field}
-                  label={config.label}
-                  placeholder={config.placeholder}
-                />
-              )}
+              {(field) => <FormTextField field={field} {...textFieldProps} />}
             </form.Field>
           );
-        }
-
-        const { type: _, ...textFieldProps } = config;
-
-        return (
-          <form.Field key={config.name} name={config.name}>
-            {(field) => <FormTextField field={field} {...textFieldProps} />}
-          </form.Field>
-        );
-      })}
+        })}
 
         {error ? (
           <Text className="text-destructive text-sm">{error.message}</Text>
         ) : null}
       </ScrollView>
+
+      <View className="flex-row justify-center pb-8">
+        <Text className="text-base text-muted-foreground">
+          Vous avez déjà un compte ?{' '}
+        </Text>
+        <Text
+          className="text-base font-semibold text-primary"
+          onPress={() => router.push('/(auth)')}
+        >
+          Se connecter
+        </Text>
+      </View>
+
 
       <View
         className="border-t border-border bg-background px-0 pt-4"
@@ -195,6 +208,7 @@ export default function AuthRegister() {
         <form.Subscribe selector={(state) => state.isSubmitting}>
           {(isSubmitting) => (
             <Button
+              className='rounded-full'
               onPress={form.handleSubmit}
               disabled={isPending || isSubmitting}
             >

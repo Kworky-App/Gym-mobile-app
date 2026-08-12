@@ -13,7 +13,10 @@ export default function AuthLayout() {
         },
       }}
     >
-      <Stack.Screen name="index" options={{ title: 'Authentification' }} />
+      <Stack.Screen name="index" options={{ title: 'Content de vous revoir' }} />
+      <Stack.Screen name="register/index" options={{ title: "Inscription" }} />
+
+
     </Stack>
   );
 }
