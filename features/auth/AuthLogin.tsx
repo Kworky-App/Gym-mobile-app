@@ -6,11 +6,12 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { FormTextField } from '@/components/form/text-field';
 import { Button } from '@/components/ui/button';
 import { Text } from '@/components/ui/text';
-import { useLoginUser } from '@/features/auth/auth.login';
 import {
   type LoginUserFormValues,
   loginUserFormSchema,
 } from '@/features/auth/auth.schema';
+import { useLoginApi } from '@/features/auth/authLogin.api';
+import { useAuthStore } from '@/features/auth/useAuthStore';
 import { ROUTES } from '@/lib/routes';
 
 const defaultValues: LoginUserFormValues = {
@@ -48,7 +49,8 @@ const loginFields: LoginFieldConfig[] = [
 export default function AuthLogin() {
   const insets = useSafeAreaInsets();
   const [goHome, setGoHome] = useState(false);
-  const { mutate, isPending, error } = useLoginUser();
+  const { mutate, isPending, error } = useLoginApi();
+  const { signIn } = useAuthStore();
 
   useEffect(() => {
     if (!goHome) return;
@@ -62,7 +64,10 @@ export default function AuthLogin() {
     },
     onSubmit: ({ value }) => {
       mutate(value, {
-        onSuccess: () => setGoHome(true),
+        onSuccess: async (session) => {
+          await signIn(session);
+          setGoHome(true);
+        },
       });
     },
   });
@@ -116,7 +121,9 @@ export default function AuthLogin() {
               onPress={form.handleSubmit}
               disabled={isPending || isSubmitting}
             >
-              <Text>{isPending || isSubmitting ? 'Connexion...' : 'Se connecter'}</Text>
+              <Text>
+                {isPending || isSubmitting ? 'Connexion...' : 'Se connecter'}
+              </Text>
             </Button>
           )}
         </form.Subscribe>

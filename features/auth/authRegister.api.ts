@@ -3,7 +3,7 @@ import { httpClient } from '@/lib/httpClient';
 import { AUTH_BASE_URL } from './auth.constants';
 import type { RegisterUserRequest, RegisterUserResponse } from './auth.schema';
 
-export function useRegisterUser() {
+export function useRegisterApi() {
   const { mutate, isPending, error } = useMutation<
     RegisterUserResponse,
     Error,

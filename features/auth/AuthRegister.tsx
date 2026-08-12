@@ -10,7 +10,7 @@ import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Text } from '@/components/ui/text';
-import { useRegisterUser } from '@/features/auth/auth.register';
+import { useRegisterApi } from '@/features/auth/authRegister.api';
 import {
   type GenderValue,
   genderByValue,
@@ -89,7 +89,7 @@ const registerFields: RegisterFieldConfig[] = [
 export default function AuthRegister() {
   const insets = useSafeAreaInsets();
   const [goHome, setGoHome] = useState(false);
-  const { mutate, isPending, error } = useRegisterUser();
+  const { mutate, isPending, error } = useRegisterApi();
 
   useEffect(() => {
     if (!goHome) return;
