@@ -13,7 +13,8 @@ export default function HomeLayout() {
         headerRight: () => <ThemeToggle />,
       }}
     >
-      <Stack.Screen name="index" options={{ title: 'Accueil' }} />
+      <Stack.Screen name="index" options={{ title: 'Kworky Gym' }} />
+      <Stack.Screen name="[planId]" options={{ title: 'Exercices' }} />
     </Stack>
   );
 }

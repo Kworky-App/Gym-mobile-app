@@ -42,15 +42,6 @@ export default function TabLayout() {
           }
         />
       </NativeTabs.Trigger>
-      <NativeTabs.Trigger name="workouts">
-        <Label>Séances</Label>
-        <Icon
-          sf={{ default: 'dumbbell', selected: 'dumbbell.fill' }}
-          androidSrc={
-            <VectorIcon family={MaterialCommunityIcons} name="dumbbell" />
-          }
-        />
-      </NativeTabs.Trigger>
       <NativeTabs.Trigger name="profile">
         <Label>Profil</Label>
         <Icon
@@ -60,6 +51,6 @@ export default function TabLayout() {
           }
         />
       </NativeTabs.Trigger>
-    </NativeTabs>
+    </NativeTabs >
   );
 }
