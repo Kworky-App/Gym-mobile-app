@@ -1,3 +1,12 @@
 import AuthLogin from '@/features/auth/AuthLogin';
+import { useAuthGuard } from '@/features/auth/useAuthGuard';
 
-export default AuthLogin;
+const Login = () => {
+  const { isReady, isAuthenticated } = useAuthGuard();
+
+  if (!isReady || isAuthenticated) return null;
+
+  return <AuthLogin />;
+};
+
+export default Login;

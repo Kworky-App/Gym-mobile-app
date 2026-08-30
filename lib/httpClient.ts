@@ -1,6 +1,16 @@
 export type ApiResult<T> =
   | { success: true; data: T }
-  | { success: false; message: string };
+  | { success: false; message: string; status: number };
+
+export class HttpError extends Error {
+  status: number;
+
+  constructor(message: string, status: number) {
+    super(message);
+    this.name = 'HttpError';
+    this.status = status;
+  }
+}
 
 type AuthTokenProvider = () => Promise<string | null>;
 
@@ -30,9 +40,15 @@ export const httpClient = {
       headers,
       body: body ? JSON.stringify(body) : undefined,
     });
-    const data = await response.json();
+    const hasBody =
+      response.status !== 204 && response.headers.get('content-length') !== '0';
+    const data = hasBody ? await response.json().catch(() => null) : null;
     if (!response.ok) {
-      return { success: false, message: data?.message || 'Unknown error.' };
+      return {
+        success: false,
+        message: data?.message || 'Unknown error.',
+        status: response.status,
+      };
     }
     return { success: true, data: data as T };
   },

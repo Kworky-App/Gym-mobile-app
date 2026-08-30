@@ -10,14 +10,14 @@ import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Text } from '@/components/ui/text';
-import { useRegisterApi } from '@/features/auth/authRegister.api';
 import {
   type GenderValue,
   genderByValue,
   type RegisterUserFormValues,
   registerUserFormSchema,
   toRegisterUserRequest,
-} from '@/features/auth/auth.schema';
+} from '@/features/auth/authSchema';
+import { useRegisterApi } from '@/features/auth/useRegisterApi';
 import { ROUTES } from '@/lib/routes';
 
 const defaultValues: RegisterUserFormValues = {
@@ -137,7 +137,10 @@ export default function AuthRegister() {
                       }
                     >
                       {([0, 1] as const).map((value) => (
-                        <View key={value} className="flex-row items-center gap-3">
+                        <View
+                          key={value}
+                          className="flex-row items-center gap-3"
+                        >
                           <RadioGroupItem
                             size="lg"
                             value={String(value)}
@@ -148,7 +151,9 @@ export default function AuthRegister() {
                             onPress={() => field.handleChange(value)}
                             className="text-base"
                           >
-                            {genderByValue[value] === 'Male' ? 'Homme' : 'Femme'}
+                            {genderByValue[value] === 'Male'
+                              ? 'Homme'
+                              : 'Femme'}
                           </Label>
                         </View>
                       ))}
@@ -200,7 +205,6 @@ export default function AuthRegister() {
         </Text>
       </View>
 
-
       <View
         className="border-t border-border bg-background px-0 pt-4"
         style={{ paddingBottom: Math.max(insets.bottom, 16) }}
@@ -208,7 +212,7 @@ export default function AuthRegister() {
         <form.Subscribe selector={(state) => state.isSubmitting}>
           {(isSubmitting) => (
             <Button
-              className='rounded-full'
+              className="rounded-full"
               onPress={form.handleSubmit}
               disabled={isPending || isSubmitting}
             >

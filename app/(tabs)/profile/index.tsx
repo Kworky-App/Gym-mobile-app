@@ -1,3 +1,3 @@
-import { ProfileView } from "@/features/views/ProfileView";
+import { UserProfile } from '@/features/user/UserProfile';
 
-export default ProfileView
+export default UserProfile;

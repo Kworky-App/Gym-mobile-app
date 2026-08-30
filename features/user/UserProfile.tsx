@@ -5,7 +5,7 @@ import { Text } from '@/components/ui/text';
 import { useAuthStore } from '@/features/auth/useAuthStore';
 import { ROUTES } from '@/lib/routes';
 
-export const ProfileView = () => {
+export const UserProfile = () => {
   const { user, signOut } = useAuthStore();
 
   const handleSignOut = async () => {
