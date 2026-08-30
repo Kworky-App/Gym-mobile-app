@@ -1,7 +1,7 @@
 import { useMutation } from '@tanstack/react-query';
 import { httpClient } from '@/lib/httpClient';
-import { AUTH_BASE_URL } from './auth.constants';
-import type { RegisterUserRequest, RegisterUserResponse } from './auth.schema';
+import { AUTH_BASE_URL } from './authConstants';
+import type { RegisterUserRequest, RegisterUserResponse } from './authSchema';
 
 export function useRegisterApi() {
   const { mutate, isPending, error } = useMutation<

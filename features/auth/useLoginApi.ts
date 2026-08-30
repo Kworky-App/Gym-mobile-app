@@ -1,7 +1,7 @@
 import { useMutation } from '@tanstack/react-query';
 import { httpClient } from '@/lib/httpClient';
-import { AUTH_BASE_URL } from './auth.constants';
-import type { LoginUserRequest, LoginUserResponse } from './auth.schema';
+import { AUTH_BASE_URL } from './authConstants';
+import type { LoginUserRequest, LoginUserResponse } from './authSchema';
 
 export function useLoginApi() {
   const { mutate, isPending, error, data } = useMutation<

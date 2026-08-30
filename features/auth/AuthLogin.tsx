@@ -9,9 +9,9 @@ import { Text } from '@/components/ui/text';
 import {
   type LoginUserFormValues,
   loginUserFormSchema,
-} from '@/features/auth/auth.schema';
-import { useLoginApi } from '@/features/auth/authLogin.api';
+} from '@/features/auth/authSchema';
 import { useAuthStore } from '@/features/auth/useAuthStore';
+import { useLoginApi } from '@/features/auth/useLoginApi';
 import { ROUTES } from '@/lib/routes';
 
 const defaultValues: LoginUserFormValues = {

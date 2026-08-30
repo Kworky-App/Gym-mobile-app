@@ -1,11 +1,11 @@
 import { useQuery, useQueryClient } from '@tanstack/react-query';
-import { AUTH_SESSION_KEY } from './auth.constants';
+import { AUTH_SESSION_KEY } from './authConstants';
 import {
   clearStoredSession,
   getStoredSession,
   type StoredSession,
   setStoredSession,
-} from './authStorage.lib';
+} from './authStorage';
 
 export function useAuthStore() {
   const queryClient = useQueryClient();

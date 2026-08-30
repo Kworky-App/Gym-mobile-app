@@ -7,7 +7,7 @@ import { Stack } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import { useColorScheme } from 'nativewind';
 import { View } from 'react-native';
-import { getStoredSession } from '@/features/auth/authStorage.lib';
+import { getStoredSession } from '@/features/auth/authStorage';
 import { httpClient } from '@/lib/httpClient';
 import { queryClient } from '@/lib/queryProvider';
 import { NAV_THEME } from '@/lib/theme';
